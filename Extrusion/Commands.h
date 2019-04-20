@@ -19,13 +19,19 @@ static const char CommandSetGotoPositive = '>';
 static const char CommandSafetyDisable   = 'x';
 static const char CommandGetRobotState   = 'q';
 
+//Communication to external Arduino for access to more Pins
+static const char CommandSetFlexDemo      = 'F'; //11
+static const char CommandSetCloseNoz     = 'o';  //10
+static const char CommandSetOpenNoz     = 'O';  //01
+static const char CommandSetNozDirection = 'V'; //00
+
 //-- Message Processing Command
 //--
-void CommandProcess( 
+void CommandProcess(
   const char* bytes, uint8_t count )
 {
   if( count == 0 ) return;
-  
+
   switch( bytes[0] )
   {
     #pragma region -- Robot State ---------------------------------------------
@@ -52,30 +58,30 @@ void CommandProcess(
     #pragma endregion
 
     #pragma region -- Echo Mode -----------------------------------------------
-    
+
     case CommandGetEcho:
     {
       ConsolePrint( ">> Echo ", ConsoleGetEcho( ) );
     }
-    break;  
+    break;
 
     case CommandSetEcho:
     {
-      ConsolePrint( ">> Echo ", ConsoleSetEcho( !ConsoleGetEcho( ) ) );        
+      ConsolePrint( ">> Echo ", ConsoleSetEcho( !ConsoleGetEcho( ) ) );
     }
     break;
 
     #pragma endregion
 
     #pragma region -- Limit Switches ------------------------------------------
-    
+
     case CommandGetLimits:
     {
       MotorPrintLimits( );
     }
-    break;  
+    break;
 
-    #pragma endregion    
+    #pragma endregion
 
     #pragma region -- Motor Pulse Delay ---------------------------------------
 
@@ -87,7 +93,7 @@ void CommandProcess(
 
     case CommandSetPulse:
     {
-      if( !MotorSetPulseValue( ParseIntU<uint16_t>( 
+      if( !MotorSetPulseValue( ParseIntU<uint16_t>(
         bytes, count, MotorGetPulseValue( ) ) ) )
       {
         ConsolePrint( ">> Motor Stopped" );
@@ -112,12 +118,12 @@ void CommandProcess(
 
     case CommandSetDirection:
     {
-      int8_t value = ParseIntS<int8_t>( 
+      int8_t value = ParseIntS<int8_t>(
         bytes, count, -MotorGetDirection( ) );
-      
-      MotorSetDirection( 
-        value < 0 ? -1 : 1 );      
-        
+
+      MotorSetDirection(
+        value < 0 ? -1 : 1 );
+
       MotorPrintDirection( );
     }
     break;
@@ -128,13 +134,46 @@ void CommandProcess(
 
     case CommandSetStep:
     {
-      MotorSetStep( );      
+      MotorSetStep( );
     }
     break;
 
     case CommandSetHalt:
     {
-      MotorSetHalt( );      
+      MotorSetHalt( );
+    }
+    break;
+
+    #pragma endregion
+
+    #pragma region -- Variable Nozzle Control -----------------------------------------
+
+    case CommandSetFlexDemo: //F
+    {
+      digitalWrite(5, HIGH);
+      digitalWrite(6,HIGH);
+    }
+    break;
+
+
+    case CommandSetCloseNoz: //o
+    {
+      digitalWrite(5, HIGH);
+      digitalWrite(6,LOW);
+    }
+    break;
+
+    case CommandSetOpenNoz: // O
+    {
+      digitalWrite(5, LOW);
+      digitalWrite(6,HIGH);
+    }
+    break;
+
+    case CommandSetNozDirection: //V
+    {
+      digitalWrite(5, LOW);
+      digitalWrite(6,LOW);
     }
     break;
 
@@ -144,8 +183,8 @@ void CommandProcess(
 
     case CommandSetRelative:
     {
-      MotorSetRelative( ParseIntS<int32_t>( 
-        bytes, count, 0 ), MotorGetPulseValue( ) );            
+      MotorSetRelative( ParseIntS<int32_t>(
+        bytes, count, 0 ), MotorGetPulseValue( ) );
     }
     break;
 
@@ -155,7 +194,7 @@ void CommandProcess(
 
     case CommandSetAbsolute:
     {
-      MotorSetAbsolute( ParseIntS<int32_t>( 
+      MotorSetAbsolute( ParseIntS<int32_t>(
         bytes, count, 0 ), MotorGetPulseValue( ) );
     }
     break;
@@ -176,7 +215,7 @@ void CommandProcess(
     }
     break;
 
-    #pragma endregion    
+    #pragma endregion
 
     #pragma region -- Position ------------------------------------------------
 
@@ -186,7 +225,7 @@ void CommandProcess(
     }
     break;
 
-    #pragma endregion    
+    #pragma endregion
 
     #pragma region -- Calibration ---------------------------------------------
 
@@ -198,12 +237,12 @@ void CommandProcess(
 
     case CommandGetCalibrate:
     {
-      ConsolePrint( ">> Configured   ", MotorGetConfigured  ( ) );   
-      ConsolePrint( ">> Motion Range ", MotorGetMotionRange ( ) );   
+      ConsolePrint( ">> Configured   ", MotorGetConfigured  ( ) );
+      ConsolePrint( ">> Motion Range ", MotorGetMotionRange ( ) );
     }
     break;
 
-    #pragma endregion 
+    #pragma endregion
 
     default:
     {
