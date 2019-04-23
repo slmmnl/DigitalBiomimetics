@@ -152,6 +152,7 @@ void CommandProcess(
     {
       digitalWrite(5, HIGH);
       digitalWrite(6,HIGH);
+      Serial.println("F");
     }
     break;
 
@@ -160,6 +161,7 @@ void CommandProcess(
     {
       digitalWrite(5, HIGH);
       digitalWrite(6,LOW);
+      Serial.println("o");
     }
     break;
 
@@ -167,6 +169,7 @@ void CommandProcess(
     {
       digitalWrite(5, LOW);
       digitalWrite(6,HIGH);
+      Serial.println("O");
     }
     break;
 
@@ -174,6 +177,7 @@ void CommandProcess(
     {
       digitalWrite(5, LOW);
       digitalWrite(6,LOW);
+      Serial.println("V");
     }
     break;
 

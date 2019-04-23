@@ -37,6 +37,8 @@ void setup( )
   MotorSetup( );
   RobotSetup( );
   ConsoleSetup( );
+  pinMode(5, OUTPUT);
+  pinMode(6, OUTPUT);
 }
 
 //-- Message Processing
