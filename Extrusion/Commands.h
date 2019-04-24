@@ -20,10 +20,10 @@ static const char CommandSafetyDisable   = 'x';
 static const char CommandGetRobotState   = 'q';
 
 //Communication to external Arduino for access to more Pins
-static const char CommandSetFlexDemo      = 'F'; //11
-static const char CommandSetCloseNoz     = 'o';  //10
-static const char CommandSetOpenNoz     = 'O';  //01
-static const char CommandSetNozDirection = 'V'; //00
+static const char CommandSetOpenNoz       = '1'; //11
+static const char CommandSetCloseNoz      = '2'; //10
+static const char CommandSetX             = '3'; //01
+static const char EchoUno                 = '4'; //00
 
 //-- Message Processing Command
 //--
@@ -148,36 +148,36 @@ void CommandProcess(
 
     #pragma region -- Variable Nozzle Control -----------------------------------------
 
-    case CommandSetFlexDemo: //F
+    case CommandSetOpenNoz:
     {
       digitalWrite(5, HIGH);
       digitalWrite(6,HIGH);
-      Serial.println("F");
+      Serial.println("State 1");
     }
     break;
 
 
-    case CommandSetCloseNoz: //o
+    case CommandSetCloseNoz:
     {
       digitalWrite(5, HIGH);
       digitalWrite(6,LOW);
-      Serial.println("o");
+      Serial.println("State 2");
     }
     break;
 
-    case CommandSetOpenNoz: // O
+    case CommandSetX:
     {
       digitalWrite(5, LOW);
       digitalWrite(6,HIGH);
-      Serial.println("O");
+      Serial.println("State 3");
     }
     break;
 
-    case CommandSetNozDirection: //V
+    case EchoUno:
     {
       digitalWrite(5, LOW);
       digitalWrite(6,LOW);
-      Serial.println("V");
+      Serial.println("State 4");
     }
     break;
 
