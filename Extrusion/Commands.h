@@ -20,10 +20,10 @@ static const char CommandSafetyDisable   = 'x';
 static const char CommandGetRobotState   = 'q';
 
 //Communication to external Arduino for access to more Pins
-static const char CommandSetOpenNoz       = '1'; //11
+static const char CommandSetOpenNoz       = '3'; //11
 static const char CommandSetCloseNoz      = '2'; //10
-static const char CommandSetX             = '3'; //01
-static const char EchoUno                 = '4'; //00
+static const char CommandSetX             = '1'; //01
+static const char EchoUno                 = '0'; //00
 
 //-- Message Processing Command
 //--
@@ -152,7 +152,7 @@ void CommandProcess(
     {
       digitalWrite(5, HIGH);
       digitalWrite(6,HIGH);
-      Serial.println("State 1");
+      Serial.println("OPENING NOZZLE");
     }
     break;
 
@@ -161,7 +161,7 @@ void CommandProcess(
     {
       digitalWrite(5, HIGH);
       digitalWrite(6,LOW);
-      Serial.println("State 2");
+      Serial.println("CLOSE NOZZLE");
     }
     break;
 
@@ -169,7 +169,7 @@ void CommandProcess(
     {
       digitalWrite(5, LOW);
       digitalWrite(6,HIGH);
-      Serial.println("State 3");
+      Serial.println("SET X");
     }
     break;
 
@@ -177,7 +177,7 @@ void CommandProcess(
     {
       digitalWrite(5, LOW);
       digitalWrite(6,LOW);
-      Serial.println("State 4");
+      Serial.println("Serial Control Using External Uno");
     }
     break;
 
