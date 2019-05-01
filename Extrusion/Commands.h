@@ -20,9 +20,9 @@ static const char CommandSafetyDisable   = 'x';
 static const char CommandGetRobotState   = 'q';
 
 //Communication to external Arduino for access to more Pins
-static const char CommandSetOpenNoz       = '3'; //11
-static const char CommandSetCloseNoz      = '2'; //10
-static const char CommandSetX             = '1'; //01
+static const char CommandSetOpenNoz       = 'O'; //11
+static const char CommandSetCloseNoz      = 'X'; //10
+static const char CommandSetX             = 'o'; //01
 static const char EchoUno                 = '0'; //00
 
 //-- Message Processing Command
